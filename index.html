@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search App</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+#search-input {
+    width: 300px;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#movie-details {
+    margin-top: 20px;
+}
+
+.movie-poster {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+.movie-info {
+    text-align: left;
+    margin: auto;
+    max-width: 400px;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Movie Search</h1>
+    <input type="text" id="search-input" placeholder="Search for a movie...">
+    <button onclick="searchMovie()">Search</button>
+    <div id="movie-details"></div>
+
+    <script>
+        async function searchMovie() {
+    // Instead of dynamically generating the URL, use the provided one
+    const apiUrl = 'http://www.omdbapi.com/?i=tt3896198&apikey=ddb14be9';
+
+    const response = await fetch(apiUrl);
+    const movie = await response.json();
+    displayMovieDetails(movie);
+}
+
+function displayMovieDetails(movie) {
+    const movieDetails = document.getElementById('movie-details');
+    if (movie.Response === "True") {
+        movieDetails.innerHTML = `
+            <img class="movie-poster" src="${movie.Poster}" alt="Movie Poster">
+            <div class="movie-info">
+                <h2>${movie.Title}</h2>
+                <p><strong>Plot:</strong> ${movie.Plot}</p>
+                <p><strong>Release Date:</strong> ${movie.Released}</p>
+                <p><strong>Rating:</strong> ${movie.imdbRating}</p>
+            </div>
+        `;
+    } else {
+        movieDetails.innerHTML = `<p>Movie not found!</p>`;
+    }
+}
+
+
+    </script>
+</body>
+</html>
